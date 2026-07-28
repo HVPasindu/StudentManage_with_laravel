@@ -21,6 +21,8 @@ class Subject extends Model
 
     public function students(): BelongsToMany
     {
-        return $this->belongsToMany(Student::class);
+        return $this->belongsToMany(Student::class)
+            ->withPivot('enrolled_at', 'status', 'final_mark')
+            ->withTimestamps();
     }
 }
