@@ -37,4 +37,11 @@ class StudentController extends Controller
             ->route('students.index')
             ->with('success', 'Student created successfully.');
     }
+
+
+    public function show(Student $student)
+    {
+        return view('students.show', compact('student'));
+        
+    }
 }

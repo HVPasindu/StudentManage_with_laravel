@@ -20,6 +20,7 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Date of Birth</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -32,6 +33,9 @@
                     <td>{{ $student->last_name }}</td>
                     <td>{{ $student->email }}</td>
                     <td>{{ $student->date_of_birth }}</td>
+                    <td>
+                        <a href="{{ route('students.show', $student) }}">View</a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
