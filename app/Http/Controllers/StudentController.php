@@ -18,4 +18,23 @@ class StudentController extends Controller
     {
         return view('students.create');
     }
+
+    public function store(Request $request)
+
+    //validated ekata enne array ekak request eke n validate method eka use karala api eka check karano hari giyoth eka save kara gannava.
+    {
+        $validated = $request->validate([
+            'student_number' => 'required|string|max:50|unique:students,student_number',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'nullable|email|unique:students,email',
+            'date_of_birth' => 'nullable|date',
+        ]);
+
+        Student::create($validated);
+
+        return redirect()
+            ->route('students.index')
+            ->with('success', 'Student created successfully.');
+    }
 }
