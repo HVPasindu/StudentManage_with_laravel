@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>@yield('title', 'School Management')</title>
 </head>
+
 <body>
 
     <h2>School Management System</h2>
+
+    @include('partials.navbar')
 
     <hr>
 
     @yield('content')
 
 </body>
+
 </html>
