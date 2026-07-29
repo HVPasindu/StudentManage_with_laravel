@@ -52,6 +52,14 @@
                     <td>
                         <a href="{{ route('students.show', $student) }}">View</a>
                         <a href="{{ route('students.edit', $student) }}">Edit</a>
+
+                        <form action="{{ route('students.destroy', $student) }}" method="POST" style="display:inline;"
+                            onsubmit="return confirm('Are you sure you want to delete this student?');">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit">Delete</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
