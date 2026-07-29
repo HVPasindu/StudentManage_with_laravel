@@ -10,6 +10,22 @@
 <body>
 
     <h1>Students</h1>
+
+    @if (session('success'))
+        <div id="success-message">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <script>
+        setTimeout(function() {
+            const message = document.getElementById('success-message');
+
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 3000);
+    </script>
     <a href="{{ route('students.create') }}">Create Student</a>
     <table border="1" cellpadding="10">
         <thead>
@@ -35,6 +51,7 @@
                     <td>{{ $student->date_of_birth }}</td>
                     <td>
                         <a href="{{ route('students.show', $student) }}">View</a>
+                        <a href="{{ route('students.edit', $student) }}">Edit</a>
                     </td>
                 </tr>
             @endforeach
