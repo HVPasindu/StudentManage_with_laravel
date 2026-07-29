@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Details</title>
-</head>
+@section('title', 'Student Details')
 
-<body>
+@section('content')
 
     <h1>Student Details</h1>
 
@@ -36,8 +31,14 @@
         {{ $student->date_of_birth }}
     </p>
 
-    <a href="{{ route('students.index') }}">Back to Students</a>
+    <a href="{{ route('students.edit', $student) }}">
+        Edit Student
+    </a>
 
-</body>
+    <br><br>
 
-</html>
+    <a href="{{ route('students.index') }}">
+        Back to Students
+    </a>
+
+@endsection
