@@ -41,12 +41,8 @@
 
                         <a href="{{ route('students.edit', $student) }}">Edit</a>
 
-                        <form
-                            action="{{ route('students.destroy', $student) }}"
-                            method="POST"
-                            style="display:inline;"
-                            onsubmit="return confirm('Are you sure you want to delete this student?');"
-                        >
+                        <form action="{{ route('students.destroy', $student) }}" method="POST" style="display:inline;"
+                            onsubmit="return confirm('Are you sure you want to delete this student?');">
                             @csrf
                             @method('DELETE')
 
@@ -57,9 +53,9 @@
             @endforeach
         </tbody>
     </table>
-
+    {{ $students->links() }}
     <script>
-        setTimeout(function () {
+        setTimeout(function() {
             const message = document.getElementById('success-message');
 
             if (message) {
