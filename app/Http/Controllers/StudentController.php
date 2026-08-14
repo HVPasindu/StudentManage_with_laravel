@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 
 class StudentController extends Controller
 {
@@ -20,17 +22,9 @@ class StudentController extends Controller
         return view('students.create');
     }
 
-    public function store(Request $request)
-
-    //validated ekata enne array ekak request eke n validate method eka use karala api eka check karano hari giyoth eka save kara gannava.
+    public function store(StoreStudentRequest $request)
     {
-        $validated = $request->validate([
-            'student_number' => 'required|string|max:50|unique:students,student_number',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:students,email',
-            'date_of_birth' => 'nullable|date',
-        ]);
+        $validated = $request->validated();
 
         Student::create($validated);
 
@@ -51,24 +45,9 @@ class StudentController extends Controller
         return view('students.edit', compact('student'));
     }
 
-    public function update(Request $request, Student $student)
+    public function update(UpdateStudentRequest $request, Student $student)
     {
-        $validated = $request->validate([
-            'student_number' => [
-                'required',
-                'string',
-                'max:50',
-                Rule::unique('students', 'student_number')->ignore($student->id),
-            ],
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => [
-                'nullable',
-                'email',
-                Rule::unique('students', 'email')->ignore($student->id),
-            ],
-            'date_of_birth' => 'nullable|date',
-        ]);
+        $validated = $request->validated();
 
         $student->update($validated);
 
