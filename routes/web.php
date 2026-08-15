@@ -36,3 +36,6 @@ use App\Http\Controllers\StudentController;
 // naththan laravel valata hoya ganna bari veno
 
 Route::resource('students', StudentController::class);
+
+Route::post('/students/{student}/subjects', [StudentController::class, 'enrollSubject'])
+    ->name('students.subjects.enroll');

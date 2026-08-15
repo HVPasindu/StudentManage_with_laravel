@@ -98,15 +98,39 @@
 
     <h2>Enroll New Subject</h2>
 
-    <select name="subject_id">
-        <option value="">Select Subject</option>
+    <form method="POST" action="{{ route('students.subjects.enroll', $student) }}">
+        @csrf
 
-        @foreach ($subjects as $subject)
-            <option value="{{ $subject->id }}">
-                {{ $subject->name }}
-            </option>
-        @endforeach
-    </select>
+        <div>
+            <label>Subject</label>
+
+            <select name="subject_id">
+                <option value="">Select Subject</option>
+
+                @foreach ($subjects as $subject)
+                    <option value="{{ $subject->id }}">
+                        {{ $subject->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            @error('subject_id')
+                <div>{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div>
+            <label>Enrolled Date</label>
+
+            <input type="date" name="enrolled_at" value="{{ old('enrolled_at') }}">
+
+            @error('enrolled_at')
+                <div>{{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit">Enroll Subject</button>
+    </form>
     <a href="{{ route('students.edit', $student) }}">
         Edit Student
     </a>

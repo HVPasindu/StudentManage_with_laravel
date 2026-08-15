@@ -8,6 +8,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Http\Request;
 use App\Models\Subject;
+use Illuminate\Validation\Rule;
 class StudentController extends Controller
 {
     public function index(Request $request)
@@ -77,5 +78,27 @@ class StudentController extends Controller
         return redirect()
             ->route('students.index')
             ->with('success', 'Student deleted successfully.');
+    }
+
+    public function enrollSubject(Request $request, Student $student)
+    {
+        $validated = $request->validate([
+            'subject_id' => [
+                'required',
+                'exists:subjects,id',
+                Rule::unique('student_subject', 'subject_id')
+                    ->where(fn($query) => $query->where('student_id', $student->id)),
+            ],
+            'enrolled_at' => 'nullable|date',
+        ]);
+
+        $student->subjects()->attach($validated['subject_id'], [
+            'enrolled_at' => $validated['enrolled_at'] ?? now()->toDateString(),
+            'status' => 'active',
+        ]);
+
+        return redirect()
+            ->route('students.show', $student)
+            ->with('success', 'Student enrolled successfully.');
     }
 }
