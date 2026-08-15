@@ -7,7 +7,7 @@ use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Http\Request;
-
+use App\Models\Subject;
 class StudentController extends Controller
 {
     public function index(Request $request)
@@ -47,8 +47,11 @@ class StudentController extends Controller
 
     public function show(Student $student)
     {
-        return view('students.show', compact('student'));
+        $student->load('profile', 'subjects');
 
+        $subjects = Subject::orderBy('name')->get();
+
+        return view('students.show', compact('student', 'subjects'));
     }
 
     public function edit(Student $student)
