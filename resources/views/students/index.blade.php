@@ -12,6 +12,14 @@
         </div>
     @endif
 
+    <form method="GET" action="{{ route('students.index') }}">
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search students...">
+
+        <button type="submit">Search</button>
+
+        <a href="{{ route('students.index') }}">Clear</a>
+    </form>
+
     <a href="{{ route('students.create') }}">Create Student</a>
 
     <table border="1" cellpadding="10">

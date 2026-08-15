@@ -6,12 +6,24 @@ use App\Models\Student;
 
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::latest()->paginate(3);
+        $search = $request->input('search');
+
+        $students = Student::query()
+            ->when($search, function ($query, $search) {
+                $query->where('student_number', 'like', "%{$search}%")
+                    ->orWhere('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(3)
+            ->withQueryString();
 
         return view('students.index', compact('students'));
     }
