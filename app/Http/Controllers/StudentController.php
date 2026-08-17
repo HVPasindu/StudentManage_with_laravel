@@ -111,4 +111,22 @@ class StudentController extends Controller
             ->route('students.show', $student)
             ->with('success', 'Subject removed successfully.');
     }
+
+    public function updateSubject(Request $request, Student $student, Subject $subject)
+    {
+        $validated = $request->validate([
+            'enrolled_at' => 'nullable|date',
+            'status' => 'required|in:active,completed,dropped',
+            'final_mark' => 'nullable|numeric|min:0|max:100',
+        ]);
+
+        $student->subjects()->updateExistingPivot(
+            $subject->id,
+            $validated
+        );
+
+        return redirect()
+            ->route('students.show', $student)
+            ->with('success', 'Subject details updated successfully.');
+    }
 }

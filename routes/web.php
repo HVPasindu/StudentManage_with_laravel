@@ -43,3 +43,7 @@ Route::post('/students/{student}/subjects', [StudentController::class, 'enrollSu
 
 Route::delete('/students/{student}/subjects/{subject}', [StudentController::class, 'removeSubject'])
     ->name('students.subjects.remove');
+
+
+Route::put('/students/{student}/subjects/{subject}', [StudentController::class, 'updateSubject'])
+    ->name('students.subjects.update');

@@ -59,6 +59,12 @@
 
     <h2>Subjects</h2>
 
+    @if (session('success'))
+        <div id="success-message">
+            {{ session('success') }}
+        </div>
+    @endif
+
     @if ($student->subjects->isNotEmpty())
 
         <table border="1" cellpadding="10">
@@ -78,20 +84,43 @@
                         <td>{{ $subject->name }}</td>
 
                         <td>
-                            {{ $subject->pivot->enrolled_at ?? '-' }}
+                            <input type="date" name="enrolled_at" value="{{ $subject->pivot->enrolled_at }}"
+                                form="update-subject-{{ $subject->id }}">
                         </td>
 
                         <td>
-                            {{ $subject->pivot->status ?? '-' }}
+                            <select name="status" form="update-subject-{{ $subject->id }}">
+                                <option value="active" {{ $subject->pivot->status === 'active' ? 'selected' : '' }}>
+                                    Active
+                                </option>
+
+                                <option value="completed" {{ $subject->pivot->status === 'completed' ? 'selected' : '' }}>
+                                    Completed
+                                </option>
+
+                                <option value="dropped" {{ $subject->pivot->status === 'dropped' ? 'selected' : '' }}>
+                                    Dropped
+                                </option>
+                            </select>
                         </td>
 
                         <td>
-                            {{ $subject->pivot->final_mark ?? '-' }}
+                            <input type="number" name="final_mark" min="0" max="100" step="0.01"
+                                value="{{ $subject->pivot->final_mark }}" form="update-subject-{{ $subject->id }}">
                         </td>
 
                         <td>
+                            <form id="update-subject-{{ $subject->id }}" method="POST"
+                                action="{{ route('students.subjects.update', [$student, $subject]) }}"
+                                style="display:inline;">
+                                @csrf
+                                @method('PUT')
+
+                                <button type="submit">Update</button>
+                            </form>
+
                             <form method="POST" action="{{ route('students.subjects.remove', [$student, $subject]) }}"
-                                onsubmit="return confirm('Remove this subject from the student?');">
+                                style="display:inline;" onsubmit="return confirm('Remove this subject from the student?');">
                                 @csrf
                                 @method('DELETE')
 
@@ -151,5 +180,15 @@
     <a href="{{ route('students.index') }}">
         Back to Students
     </a>
+
+    <script>
+        setTimeout(function() {
+            const message = document.getElementById('success-message');
+
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 3000);
+    </script>
 
 @endsection
