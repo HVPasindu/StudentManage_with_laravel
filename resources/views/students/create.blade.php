@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Student</title>
-</head>
+@section('title', 'Create Student')
 
-<body>
+@section('content')
 
     <h1>Create Student</h1>
 
@@ -28,27 +23,67 @@
 
         <div>
             <label>Student Number</label>
-            <input type="text" name="student_number" value="{{ old('student_number') }}">
+            <input
+                type="text"
+                name="student_number"
+                value="{{ old('student_number') }}"
+            >
+
+            @error('student_number')
+                <div>{{ $message }}</div>
+            @enderror
         </div>
 
         <div>
             <label>First Name</label>
-            <input type="text" name="first_name"  value="{{ old('first_name') }}">
+            <input
+                type="text"
+                name="first_name"
+                value="{{ old('first_name') }}"
+            >
+
+            @error('first_name')
+                <div>{{ $message }}</div>
+            @enderror
         </div>
 
         <div>
             <label>Last Name</label>
-            <input type="text" name="last_name" value="{{ old('last_name') }}">
+            <input
+                type="text"
+                name="last_name"
+                value="{{ old('last_name') }}"
+            >
+
+            @error('last_name')
+                <div>{{ $message }}</div>
+            @enderror
         </div>
 
         <div>
             <label>Email</label>
-            <input type="email" name="email" value="{{ old('email') }}">
+            <input
+                type="email"
+                name="email"
+                value="{{ old('email') }}"
+            >
+
+            @error('email')
+                <div>{{ $message }}</div>
+            @enderror
         </div>
 
         <div>
             <label>Date of Birth</label>
-            <input type="date" name="date_of_birth"  value="{{ old('date_of_birth') }}">
+            <input
+                type="date"
+                name="date_of_birth"
+                value="{{ old('date_of_birth') }}"
+            >
+
+            @error('date_of_birth')
+                <div>{{ $message }}</div>
+            @enderror
         </div>
 
         <button type="submit">Save Student</button>
@@ -56,6 +91,4 @@
 
     <a href="{{ route('students.index') }}">Back to Students</a>
 
-</body>
-
-</html>
+@endsection

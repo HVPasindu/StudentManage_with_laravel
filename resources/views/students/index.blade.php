@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students</title>
-</head>
+@section('title', 'Students')
 
-<body>
+@section('content')
 
     <h1>Students</h1>
 
@@ -17,16 +12,16 @@
         </div>
     @endif
 
-    <script>
-        setTimeout(function() {
-            const message = document.getElementById('success-message');
+    <form method="GET" action="{{ route('students.index') }}">
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search students...">
 
-            if (message) {
-                message.style.display = 'none';
-            }
-        }, 3000);
-    </script>
+        <button type="submit">Search</button>
+
+        <a href="{{ route('students.index') }}">Clear</a>
+    </form>
+
     <a href="{{ route('students.create') }}">Create Student</a>
+
     <table border="1" cellpadding="10">
         <thead>
             <tr>
@@ -51,6 +46,7 @@
                     <td>{{ $student->date_of_birth }}</td>
                     <td>
                         <a href="{{ route('students.show', $student) }}">View</a>
+
                         <a href="{{ route('students.edit', $student) }}">Edit</a>
 
                         <form action="{{ route('students.destroy', $student) }}" method="POST" style="display:inline;"
@@ -65,7 +61,15 @@
             @endforeach
         </tbody>
     </table>
+    {{ $students->links() }}
+    <script>
+        setTimeout(function() {
+            const message = document.getElementById('success-message');
 
-</body>
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 3000);
+    </script>
 
-</html>
+@endsection

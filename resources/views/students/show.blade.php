@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Details</title>
-</head>
+@section('title', 'Student Details')
 
-<body>
+@section('content')
 
     <h1>Student Details</h1>
 
@@ -36,8 +31,125 @@
         {{ $student->date_of_birth }}
     </p>
 
-    <a href="{{ route('students.index') }}">Back to Students</a>
+    <h2>Student Profile</h2>
 
-</body>
+    @if ($student->profile)
+        <p>
+            <strong>Address:</strong>
+            {{ $student->profile->address }}
+        </p>
 
-</html>
+        <p>
+            <strong>Phone:</strong>
+            {{ $student->profile->phone }}
+        </p>
+
+        <p>
+            <strong>Guardian Name:</strong>
+            {{ $student->profile->guardian_name }}
+        </p>
+
+        <p>
+            <strong>Guardian Phone:</strong>
+            {{ $student->profile->guardian_phone }}
+        </p>
+    @else
+        <p>No profile found for this student.</p>
+    @endif
+
+    <h2>Subjects</h2>
+
+    @if ($student->subjects->isNotEmpty())
+
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Enrolled Date</th>
+                    <th>Status</th>
+                    <th>Final Mark</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($student->subjects as $subject)
+                    <tr>
+                        <td>{{ $subject->name }}</td>
+
+                        <td>
+                            {{ $subject->pivot->enrolled_at ?? '-' }}
+                        </td>
+
+                        <td>
+                            {{ $subject->pivot->status ?? '-' }}
+                        </td>
+
+                        <td>
+                            {{ $subject->pivot->final_mark ?? '-' }}
+                        </td>
+
+                        <td>
+                            <form method="POST" action="{{ route('students.subjects.remove', [$student, $subject]) }}"
+                                onsubmit="return confirm('Remove this subject from the student?');">
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <p>No subjects enrolled.</p>
+
+    @endif
+
+    <h2>Enroll New Subject</h2>
+
+    <form method="POST" action="{{ route('students.subjects.enroll', $student) }}">
+        @csrf
+
+        <div>
+            <label>Subject</label>
+
+            <select name="subject_id">
+                <option value="">Select Subject</option>
+
+                @foreach ($subjects as $subject)
+                    <option value="{{ $subject->id }}">
+                        {{ $subject->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            @error('subject_id')
+                <div>{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div>
+            <label>Enrolled Date</label>
+
+            <input type="date" name="enrolled_at" value="{{ old('enrolled_at') }}">
+
+            @error('enrolled_at')
+                <div>{{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit">Enroll Subject</button>
+    </form>
+    <a href="{{ route('students.edit', $student) }}">
+        Edit Student
+    </a>
+
+    <br><br>
+
+    <a href="{{ route('students.index') }}">
+        Back to Students
+    </a>
+
+@endsection
