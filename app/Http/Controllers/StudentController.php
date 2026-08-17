@@ -101,4 +101,14 @@ class StudentController extends Controller
             ->route('students.show', $student)
             ->with('success', 'Student enrolled successfully.');
     }
+
+
+    public function removeSubject(Student $student, Subject $subject)
+    {
+        $student->subjects()->detach($subject->id);
+
+        return redirect()
+            ->route('students.show', $student)
+            ->with('success', 'Subject removed successfully.');
+    }
 }

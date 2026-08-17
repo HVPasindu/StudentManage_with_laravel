@@ -39,3 +39,7 @@ Route::resource('students', StudentController::class);
 
 Route::post('/students/{student}/subjects', [StudentController::class, 'enrollSubject'])
     ->name('students.subjects.enroll');
+
+
+Route::delete('/students/{student}/subjects/{subject}', [StudentController::class, 'removeSubject'])
+    ->name('students.subjects.remove');

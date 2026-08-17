@@ -68,6 +68,7 @@
                     <th>Enrolled Date</th>
                     <th>Status</th>
                     <th>Final Mark</th>
+                    <th>Action</th>
                 </tr>
             </thead>
 
@@ -86,6 +87,16 @@
 
                         <td>
                             {{ $subject->pivot->final_mark ?? '-' }}
+                        </td>
+
+                        <td>
+                            <form method="POST" action="{{ route('students.subjects.remove', [$student, $subject]) }}"
+                                onsubmit="return confirm('Remove this subject from the student?');">
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit">Remove</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
